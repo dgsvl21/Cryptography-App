@@ -1,10 +1,5 @@
 # SecureFile — Software Requirements Specification
 
-> **Project:** Cryptography — Assignment 2  
-> **Version:** 0.1 (draft for review)  
-> **Status:** Planning; no features have been implemented yet  
-> **Language:** English
-
 ## 1. Purpose
 
 Develop a **local desktop application** named *SecureFile* that encrypts and decrypts files using established cryptographic mechanisms, providing confidentiality and detection of unauthorized modifications to encrypted data.
@@ -115,7 +110,3 @@ The MVP may be considered complete when:
 - NIST SP 800-38D — GCM and GMAC: https://doi.org/10.6028/NIST.SP.800-38D
 - OWASP Key Management Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html
 - PyCA cryptography: https://cryptography.io/en/stable/
-
----
-
-*This is an initial specification subject to revision during analysis, modeling, and design. Requirements and priorities do not imply that any feature has already been implemented.*
