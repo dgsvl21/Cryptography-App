@@ -1,8 +1,5 @@
 # Cryptography App — Cryptographic Design
 
-**Status:** Draft v0.1 — design only (not implemented)  
-**Scope:** Offline desktop application, password-protected local file encryption and decryption.
-
 ## 1. Security objectives
 
 - **Confidentiality:** File content should not be readable without the correct password-derived key.
@@ -97,5 +94,5 @@ This is a **proposed** binary layout, subject to confirmation before implementat
 
 ## 9. Related diagrams
 
-- `diagrams/encryption-activity.puml`
-- `diagrams/decryption-activity.puml`
+- `diagrams/encryption-activity`
+- `diagrams/decryption-activity`
