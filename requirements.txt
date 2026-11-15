@@ -1,0 +1,13 @@
+# Cryptography App - Project Dependencies
+
+# Cryptographic operations
+cryptography>=45,<52
+
+# Password-based key derivation
+argon2-cffi>=25,<27
+
+# Desktop graphical interface
+PySide6>=6.10,<6.13
+
+# Automated testing
+pytest>=8,<10
