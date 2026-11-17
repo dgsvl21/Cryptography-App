@@ -1,4 +1,4 @@
-"""Tests for AES-GCM encryption and decryption functions"""
+#Tests for AES-GCM encryption and decryption functions
 import pytest
 from cryptography.exceptions import InvalidTag
 from cryptography_app.crypto.aes_gcm import (generate_key, encrypt, decrypt)
