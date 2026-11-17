@@ -1,17 +1,17 @@
-"""AES-GCM encryption and Decryption module"""
+#AES-GCM encryption and decryption module
 
 import os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-"""Constant definitions"""
+#Constant definitions#
 KEY_SIZE = 32  # AES-256
 NONCE_SIZE = 12  # Recommended size for GCM nonce
 
-"""Generate a random AES-256 key"""
+#Generate a random AES-256 key#
 def generate_key() -> bytes:
     return AESGCM.generate_key(bit_length=256)
 
-"""Encrypt data and return the nonce and ciphertext with tag."""
+#Encrypt data and return the nonce and ciphertext with tag
 def encrypt(plaintext: bytes, key: bytes, aad: bytes | None = None) -> tuple[bytes, bytes]:
     if len(key) != KEY_SIZE:
         raise ValueError("AES-256 requires a 32-byte key")
@@ -24,7 +24,7 @@ def encrypt(plaintext: bytes, key: bytes, aad: bytes | None = None) -> tuple[byt
     
     return nonce, ciphertext
 
-"""Decrypt data using the provided nonce and key"""
+#Decrypt data using the provided nonce and key
 def decrypt(nonce: bytes, ciphertext: bytes, key: bytes, aad: bytes | None = None) -> bytes:
     if len(key) != KEY_SIZE:
         raise ValueError("AES-256 requires a 32-byte key")
