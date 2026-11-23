@@ -11,10 +11,20 @@ NONCE_SIZE = 12  #recommended size for GCM nonce, 12 bytes equals to 96 bits
 def generate_key() -> bytes: 
     return AESGCM.generate_key(bit_length=256) #key generation, returns a random 32-byte key for AES-256 encryption
 
+#Encrypt data using a custom nonce
+def encrypt_with_nonce(plaintext:bytes, key:bytes, nonce:bytes, aad:bytes | None = None) -> bytes:
+    if len(key) != KEY_SIZE: #encrypt with a caller provided nonce, never reuse the same key and nonce combination
+        raise ValueError("AES-256 rquires a 32 byte key")
+    
+    if len(nonce) != NONCE_SIZE:
+        raise ValueError("Nonce must have 12 bytes")
+    
+    return AESGCM(key).encrypt(nonce, plaintext, aad) 
+
 #Encrypt data and return the nonce and ciphertext with tag
 def encrypt(plaintext: bytes, key: bytes, aad: bytes | None = None) -> tuple[bytes, bytes]:
     if len(key) != KEY_SIZE:
-        raise ValueError("AES-256 requires a 32-byte key")
+        raise ValueError("AES-256 requires a 32 byte key")
 
     nonce = os.urandom(NONCE_SIZE) #generate a random nonce for each encryption operation
 
