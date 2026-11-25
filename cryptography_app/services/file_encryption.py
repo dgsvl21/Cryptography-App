@@ -1,6 +1,7 @@
 #Password-based file encryption
 
 import os
+import tempfile
 from pathlib import Path
 from cryptography_app.crypto.aes_gcm import NONCE_SIZE, encrypt_with_nonce, decrypt
 from cryptography_app.crypto.kdf import generate_salt, derive_key, TIME_COST, MEMORY_COST, PARALLELISM
@@ -24,17 +25,31 @@ def _validate_paths(source:Path, destination:Path) -> None:
     if source.resolve() == destination.resolve():
         raise ValueError("Input and output paths must be different")
 
-#Create a new output file without overwirting an existing one
+#Safely publish a complete file without overwriting
 def _write_new(path:Path, data:bytes) -> None:
-    created = False
+    fd, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent) #Create a temporary file in the destination directory with a unique name and exclusive access
+    temporary_path = Path(temporary_name)
+
+    try: #Write the complete content to the temporary file
+        with os.fdopen(fd, "wb") as file: #Open file descriptor for binary writing
+            file.write(data) #Writes content
+            file.flush() #Sent Python buffer data to the OS
+            os.fsync(file.fileno()) #Request file data synchronization to disk
+        os.link(temporary_path, path) #Publish only if the destination does not exist and requires hard-link support on the filesystem
+    finally: #Remove the temporary name, even if publishing fails
+        temporary_path.unlink(missing_ok=True)
+
+# #Create a new output file without overwirting an existing one
+# def _write_new(path:Path, data:bytes) -> None:
+#     created = False
     
-    try:
-        with path.open("xb") as file:
-            file.write(data)
-    except BaseException:
-        if created:
-            path.unlink(missing_ok=True)
-        raise
+#     try:
+#         with path.open("xb") as file:
+#             file.write(data)
+#     except BaseException:
+#         if created:
+#             path.unlink(missing_ok=True)
+#         raise
 
 #Encrypt a local file into a new .sfe container (integrate Argon2id, AES-GCM and .sfe)
 def encrypt_file(source:str | Path, destination:str | Path, password: str) -> Path:
